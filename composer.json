@@ -1,0 +1,12 @@
+{
+    "name": "tikhomirov/bittest.local",
+    "authors": [
+        {
+            "name": "Valerii Tikhomirov",
+            "email": "v.tikhomirov.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "fguillot/simpleLogger": "^1.0"
+    }
+}
