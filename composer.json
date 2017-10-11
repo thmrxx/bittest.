@@ -8,5 +8,11 @@
     ],
     "require": {
         "fguillot/simpleLogger": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "application\\": "application/",
+            "core\\": "core/"
+        }
     }
 }

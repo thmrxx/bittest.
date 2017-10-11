@@ -9,7 +9,6 @@ define('ROOT_PATH', __DIR__ );
 define('APP_PATH', __DIR__ . '/application/');
 
 require_once 'vendor/autoload.php';
-require_once 'application/bootstrap.php';
 
 $config = require __DIR__ . '/application/config/main.php';
 (new \core\App($config))->run();
