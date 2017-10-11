@@ -2,10 +2,11 @@ CREATE TABLE `user`(
   id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(30),
   password VARCHAR(32),
-  hash VARCHAR(32)
+  hash VARCHAR(32),
+  balance DECIMAL(10,2) DEFAULT 0
 ) ENGINE=InnoDB;
 
-INSERT INTO `user` (`username`, `password`) VALUES ('user', '696d29e0940a4957748fe3fc9efd22a3'); /* password = password */
+INSERT INTO `user` (`username`, `password`, `balance`) VALUES ('user', '696d29e0940a4957748fe3fc9efd22a3', 666.66); /* password = password */
 
 CREATE TABLE `account`(
   id int NOT NULL PRIMARY KEY AUTO_INCREMENT,

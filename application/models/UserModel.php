@@ -19,6 +19,7 @@ use core\Model;
  * @property string $username
  * @property string $password
  * @property string $hash
+ * @property float $balance
  */
 class UserModel extends Model
 {
@@ -82,14 +83,7 @@ class UserModel extends Model
      */
     public function getBalance()
     {
-        $status = 'success';
-        $sql = 'SELECT SUM(`value`) FROM ' . static::$accountTableName . ' WHERE `user_id` = ? AND `status` = ?';
-        $stmt = App::$db->prepare($sql);
-        $stmt->bind_param('is', $this->id, $status);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->num_rows ? $result->fetch_array()[0] : 0;
+        return $this->balance;
     }
 
     /**
@@ -129,8 +123,19 @@ class UserModel extends Model
     public function pay($hash)
     {
         try {
+            if (!$this->isLoaded()) {
+                throw new Exception('Model not loaded');
+            }
+
             $db = App::$db;
             $db->begin_transaction();
+
+            // get user to lock
+            $sql = 'SELECT * FROM ' . static::$tableName . ' WHERE `id` = ? FOR UPDATE';
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param('i', $this->id);
+            $stmt->execute();
+            $user = $stmt->get_result()->fetch_assoc();
 
             // get "new" pay
             $status = 'new';
@@ -151,8 +156,7 @@ class UserModel extends Model
             $this->setPayStatus($pay['id'], 'process');
 
             $value = (float)$pay['value'];
-
-            $balance = $this->getBalance();
+            $balance = (float)$user['balance'];
 
             if ($balance + $value < 0) {
                 $db->rollback();
@@ -164,9 +168,16 @@ class UserModel extends Model
 
             $result = $this->setPayStatus($pay['id'], 'success');
 
+            $balance += $value;
+
+            $sql = 'UPDATE ' . static::$tableName . ' SET `balance` = ? WHERE `id` = ?';
+            $stmt = App::$db->prepare($sql);
+            $stmt->bind_param('di', $balance, $this->id);
+            $result = $stmt->execute() && $result;
+
             if (!$result) {
                 $db->rollback();
-                App::$logger->error('Transaction error: could not update pay status');
+                App::$logger->error('Transaction error: could not accept pay');
                 $this->setPayStatus($pay['id'], 'failed');
 
                 return false;
