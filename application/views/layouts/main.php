@@ -7,7 +7,7 @@
 <html>
 <head>
     <title><?php echo \core\App::$instance->config['title']; ?></title>
-    <link href="web/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="js/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -38,6 +38,6 @@
 </div>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="web/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script src="js/web/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>
