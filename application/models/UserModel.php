@@ -162,10 +162,7 @@ class UserModel extends Model
                 return false;
             }
 
-            $sql = 'UPDATE ' . static::$accountTableName . ' SET `status` = "success" WHERE `hash` = ?';
-            $stmt = $db->prepare($sql);
-            $stmt->bind_param('s', $hash);
-            $result = $stmt->execute();
+            $result = $this->setPayStatus($pay['id'], 'success');
 
             if (!$result) {
                 $db->rollback();
@@ -175,7 +172,6 @@ class UserModel extends Model
                 return false;
             }
 
-            $this->setPayStatus($pay['id'], 'success');
             App::$logger->info('Success transaction: ' . $hash);
             $db->commit();
 
