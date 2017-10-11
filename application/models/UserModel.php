@@ -20,14 +20,14 @@ use core\Model;
  * @property string $password
  * @property string $hash
  */
-class User extends Model
+class UserModel extends Model
 {
     public static $tableName = 'user';
     public static $accountTableName = 'account';
 
     /**
      * @param string $username
-     * @return User|null
+     * @return UserModel|null
      */
     public static function findByUsername($username)
     {

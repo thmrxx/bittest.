@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \application\models\User $user
+ * @var \application\models\UserModel $user
  * @var float $value
  * @var string $error
  * @var bool $pay

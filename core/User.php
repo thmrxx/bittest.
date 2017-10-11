@@ -7,7 +7,7 @@
 
 namespace core;
 
-use \application\models\User as UserModel;
+use \application\models\UserModel;
 
 /**
  * Class User
